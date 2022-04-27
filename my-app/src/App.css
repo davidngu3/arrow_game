@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
 .app-container {
   width: 100vw;
   height: 100vh;
@@ -26,6 +28,7 @@
   padding: 2vh;
   color: rgb(231, 231, 231);
   font-size: 3em;
+  font-family: 'Press Start 2P', cursive;
 }
 
 .start-button {
@@ -35,7 +38,8 @@
   justify-content: center;
   align-items: center;
   color: rgb(253, 244, 159);
-  font-size: 2em;
+  font-size: 1.5em;
+  font-family: 'Press Start 2P', cursive;
 }
 
 .space-button {
@@ -45,7 +49,8 @@
   justify-content: center;
   align-items: center;
   color: rgb(116, 246, 255);
-  font-size: 2em;
+  font-size: 1.5em;
+  font-family: 'Press Start 2P', cursive;
 }
 
 .arrow-container {

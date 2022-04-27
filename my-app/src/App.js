@@ -5,11 +5,11 @@ function App() {
   const [gameActive, setGameState] = useState(false)
   const [arrows, setArrows] = useState([])
   const [arrowsCleared, setArrowsCleared] = useState(0)
-  const [level, setLevel] = useState(1)
+  const [level, setLevel] = useState(0)
 
   let directions = ['u', 'd', 'l', 'r']
 
-  // componentDidMount
+  // componentDidMount: set up key listener
   useEffect(
     () => {
       document.addEventListener("keydown", arrowPress);
@@ -21,59 +21,76 @@ function App() {
     },
   );
 
+  // level updated handler
+  useEffect(() => {
+    if (level > 0) {
+      startLevel()
+    }
+  }
+  , [level])
+
+  // arrows cleared update handler
+  useEffect(() => {
+    function passLevel() {
+      console.log("LEVEL PASSED")
+      resetArrows()
+      setLevel(l => l + 1)
+    }
+    
+    if (arrows.length > 0 && arrowsCleared === arrows.length) {
+      passLevel()
+    }
+    }, [arrowsCleared, arrows])
+  
+  function failLevel() {
+    setGameState(false)
+    console.log("LEVEL FAILED")
+    resetArrows()
+    setLevel(0)
+  }
+
+  // key press handler
   function arrowPress(event) {
-    console.log("curr arrows cleared: " + arrowsCleared)
+    let correct = false;
     if (!gameActive) {
       return
     }
+    
     switch (event.key) {
       case "ArrowLeft":
         if (arrows[arrowsCleared] === 'l') {
-          console.log("successful left input")
-          setArrowsCleared(arrowsCleared+1);
-        }
-        else {
-          console.log("fail")
+          correct = true;
         }
         break;
       case "ArrowRight":
         if (arrows[arrowsCleared] === 'r') {
-          console.log("successful right input")
-          setArrowsCleared(arrowsCleared+1);
-        }
-        else {
-          console.log("fail")
+          correct = true;
         }
         break;
       case "ArrowUp":
         if (arrows[arrowsCleared] === 'u') {
-          console.log("successful up input")
-          setArrowsCleared(arrowsCleared+1);
-        }
-        else {
-          console.log("fail")
+          correct = true;
         }
         break;
       case "ArrowDown":
         if (arrows[arrowsCleared] === 'd') {
-          console.log("successful down input")
-          setArrowsCleared(arrowsCleared+1);
-        }
-        else {
-          console.log("fail")
+          correct = true;          
         }
         break;
       default:
         console.log("non arrow key pressed")
         break;  
     }
-    console.log("arrows cleared: " + arrowsCleared + " arrowArr length: " + arrows.length)
-    if (arrowsCleared === arrows.length) {
-      clearLevel()
+
+    if (correct) {
+      setArrowsCleared(arrowsCleared + 1)
+    } else {
+      failLevel()
     }
   }
 
-  function startLevel(numArrows) {
+  function startLevel() {
+    let numArrows = level+2
     setGameState(true)
     console.log("Level started");
     
@@ -87,14 +104,6 @@ function App() {
     setArrows([...arrows, ...levelArrows]);  
   }
 
-  function clearLevel() {
-    setGameState(false)
-    console.log("LEVEL PASSED!.. resetting")
-    resetArrows()
-    setLevel(level + 1)
-    console.log("LEVEL " + level)
-  }
-
   function resetArrows() {
     setArrows([])
     setArrowsCleared(0)
@@ -106,10 +115,10 @@ function App() {
         <div className="title-bar">
           ARROW GAME
         </div>
-        <button className="start-button" onClick={() => startLevel(3)} disabled={gameActive}>
+        <button className="start-button" onClick={() => setLevel(1)} disabled={gameActive}>
           START BUTTON
         </button>
-        <ArrowContainer arrows={arrows} />
+        <ArrowContainer arrows={arrows} arrowsCleared={arrowsCleared} />
         <div className="space-button">
           SPACE
         </div>
@@ -119,19 +128,38 @@ function App() {
 }
 
 function ArrowContainer(props) {
+  
   return (
     <div className="arrow-container">
       {props.arrows.map(function(dir, i){
-        return <Arrow direction={dir} key={i}/>;
+        if (i < props.arrowsCleared) {
+          return <Arrow direction={dir} key={i} pressed={true}/>;
+        }
+        else {
+          return <Arrow direction={dir} key={i} pressed={false}/>;
+        }
       })}
     </div>
   )
 }
 
 function Arrow(props) {
+  let arrowSymbol = ''
+  if (props.direction === 'l') {
+    arrowSymbol = '←';
+  }
+  if (props.direction === 'r') {
+    arrowSymbol = '→';
+  }
+  if (props.direction === 'd') {
+    arrowSymbol = '↓';
+  }
+  if (props.direction === 'u') {
+    arrowSymbol = '↑';
+  }
   return (
-    <div className="arrow">
-      {props.direction}
+    <div className={props.pressed ? "arrow-pressed" : "arrow"}>
+      {arrowSymbol}
     </div>
   )
 }

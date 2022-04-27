@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/arrow_game/static/css/main.96494412.css",
+    "main.js": "/arrow_game/static/js/main.14d34951.js",
+    "index.html": "/arrow_game/index.html",
+    "main.96494412.css.map": "/arrow_game/static/css/main.96494412.css.map",
+    "main.14d34951.js.map": "/arrow_game/static/js/main.14d34951.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.96494412.css",
+    "static/js/main.14d34951.js"
+  ]
+}

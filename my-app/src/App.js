@@ -1,12 +1,14 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css';
 
 function App() {
   const [gameActive, setGameState] = useState(false)
+  const [arrows, setArrows] = useState([])
 
-  function startGame(e) {
+  function startLevel(e) {
+    console.log("Level started");
+    setArrows([...arrows, 'u', 'd', 'l']);
     setGameState(true)
-    console.log("Game started")
   }
 
   return (
@@ -15,10 +17,10 @@ function App() {
         <div className="title-bar">
           ARROW GAME
         </div>
-        <button className="start-button" onClick={startGame} disabled={gameActive}>
+        <button className="start-button" onClick={startLevel} disabled={gameActive}>
           START BUTTON
         </button>
-        <ArrowContainer />
+        <ArrowContainer arrows={arrows} />
         <div className="space-button">
           SPACE
         </div>
@@ -27,9 +29,31 @@ function App() {
   );
 }
 
-function ArrowContainer() {
+function ArrowContainer(props) {
+  // componentDidUpdate
+  useEffect(() => {
+    if (props.arrows.length > 0) {
+      console.log('arrows have changed')
+      for (let i = 0; i < props.arrows.length; i++) {
+        console.log(props.arrows[i])
+      }
+    }
+    
+  }, [props.arrows]);
+
   return (
     <div className="arrow-container">
+      {props.arrows.map(function(dir, i){
+        return <Arrow direction={dir} key={i}/>;
+      })}
+    </div>
+  )
+}
+
+function Arrow(props) {
+  return (
+    <div className="arrow">
+      {props.direction}
     </div>
   )
 }

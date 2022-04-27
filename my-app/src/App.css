@@ -14,8 +14,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: stretch;
-  width: 30vw;
-  height: 60vh;
+  width: 50vw;
+  height: 50vh;
   margin-top: 10vh;
 }
 
@@ -54,8 +54,23 @@
 }
 
 .arrow-container {
+  display: flex;
+  flex-direction: row;
   flex: 5;
   margin-top: 10px;
   margin-bottom: 10px;
   background-color: rgb(51, 51, 51);
+}
+
+.arrow {
+  display: flex;
+  height: 7vh;
+  width: 7vh;
+  color: white;
+  background-color: rgb(81, 60, 197);
+  border-style: solid;
+  border-color: blueviolet;
+  font-size: 4vh;
+  justify-content: center;
+  align-items: center;
 }
